@@ -8,7 +8,7 @@ Email: paavo.peltopihko@tuni.fi
 
 This code is for Assignment 1 implementation which is based on the paper:
 Private Lives Matter: A Differential Private Functional Encryption Scheme
-
+https://dl.acm.org/doi/10.1145/3508398.3511514
 """
 from mife.single.ddh import FeDDH
 import numpy as np
