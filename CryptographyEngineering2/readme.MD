@@ -29,9 +29,9 @@ The conversion is done very simply by treating N as a polynomial and computing i
 So, after tentoB(N, B), implement these functions:
 
 **def normalize(N, B):**  
-Well, this function is given to you [here](https://moodle.tuni.fi/mod/resource/view.php?id=2842542), and it is an essential helper function for the actual operations, because they need not care about "overflow" of their digits (how much would they create maximally?). Normalization modifies an "improper" bignum N to have each digit within 0..B-1 and the MSD>0. The function firsts uses _borrowing_ to make all digits positive. It outputs an error if this leads to a negative MSD. Then it uses _carrying_ to make all digits less than B. This may require one or more new digits to the MSD end. Leading zeros are removed after borrowing before carrying, using the method .pop().
+Well, this function is given to you [here](https://moodle.tuni.fi/mod/resource/view.php?id=2842542), and it is an essential helper function for the actual operations, because they need not care about "overflow" of their digits (how much would they create maximally?). Normalization modifies an "improper" bignum N to have each digit within 0..B-1 and the MSD>0. The function firsts uses *borrowing* to make all digits positive. It outputs an error if this leads to a negative MSD. Then it uses *carrying* to make all digits less than B. This may require one or more new digits to the MSD end. Leading zeros are removed after borrowing before carrying, using the method .pop().
 
-**def compare(M, N): **
+**def compare(M, N):**
 &nbsp;&nbsp;&nbsp;&nbsp;Return 1, if M>N, 0, if M=N, −1, if M<N  
 &nbsp;&nbsp;&nbsp;&nbsp;If M and N are normalized, comparison will work without knowing B.
 
