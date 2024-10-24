@@ -2,9 +2,10 @@
 
 Write a library of functions for operations on positive big numbers expressed in base B (=integer>1; B itself is not a bignum). Include all nine that are def'd below. Use the small-endian order: the least significant digit (LSD) comes first in a list and the most sigfnicant digit (MSD) last. It works like this when N is a list containing a bignum:
 
-### Return the decimal value of bignum N in base B.
-def Bto10(N, B):
-    return sum(digit * B**i for i, digit in enumerate(N))
+Return the decimal value of bignum N in base B.
+
+# def Bto10(N, B):
+&nbsp;&nbsp;&nbsp;&nbsp;return sum(digit * B**i for i, digit in enumerate(N))
 
 For example, Bto10( [1, 3, 1, 4], 5) gives 541 because [1, 3, 1, 4] as a bignum means 1 + 3·5 + 1·52 + 4·53 = 1 + 3·5 + 1·25 + 4·125 = 541. You can see the similarity to polynomials.
 
@@ -15,13 +16,14 @@ Convert a non-negative decimal number N to a bignum in base B. Note: 0 must beco
 
 To be useful, the library must include a version of both conversions (10→B→10), where the decimal representation is a not a number but a string (which is a "bigendian bignum" in base 10, like "541"=1 + 4·10 + 5·102). Because Python can deal with arbitrary large integers you need not bother too much with this right now—also meaning that you can use the above two conversions for testing. However, when you reach the programming assignment you will input and output hexadecimal strings (i.e., you need 16→B→16, but they are given to you). The hexadecimals may be converted to a large base like 1000 and back and here is a general conversion:
 
-### Bignum N, given in base B1 is returned in base B2.
-def convert(N,B1,B2):
-    x = [0]
-    for digit in reversed(N):
-        x = multiply(x, [B1], B2)
-        x = add(x, [digit], B2)
-    return x
+Bignum N, given in base B1 is returned in base B2.
+
+# def convert(N,B1,B2):
+&nbsp;&nbsp;&nbsp;&nbsp;    x = [0]
+&nbsp;&nbsp;&nbsp;&nbsp;    for digit in reversed(N):
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        x = multiply(x, [B1], B2)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        x = add(x, [digit], B2)
+&nbsp;&nbsp;&nbsp;&nbsp;    return x
 
 The conversion is done very simply by treating N as a polynomial and computing it at point B1 using arithmetic in base B2. Digits of N may far exceed the base B2, but the following functions will treat such overflows.
 
