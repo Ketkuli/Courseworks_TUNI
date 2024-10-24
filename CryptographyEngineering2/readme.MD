@@ -1,8 +1,8 @@
-Ex6. Bignum operations.
+# Ex6. Bignum operations.
 
 Write a library of functions for operations on positive big numbers expressed in base B (=integer>1; B itself is not a bignum). Include all nine that are def'd below. Use the small-endian order: the least significant digit (LSD) comes first in a list and the most sigfnicant digit (MSD) last. It works like this when N is a list containing a bignum:
 
-# Return the decimal value of bignum N in base B.
+### Return the decimal value of bignum N in base B.
 def Bto10(N, B):
     return sum(digit * B**i for i, digit in enumerate(N))
 
@@ -15,7 +15,7 @@ Convert a non-negative decimal number N to a bignum in base B. Note: 0 must beco
 
 To be useful, the library must include a version of both conversions (10→B→10), where the decimal representation is a not a number but a string (which is a "bigendian bignum" in base 10, like "541"=1 + 4·10 + 5·102). Because Python can deal with arbitrary large integers you need not bother too much with this right now—also meaning that you can use the above two conversions for testing. However, when you reach the programming assignment you will input and output hexadecimal strings (i.e., you need 16→B→16, but they are given to you). The hexadecimals may be converted to a large base like 1000 and back and here is a general conversion:
 
-# Bignum N, given in base B1 is returned in base B2.
+### Bignum N, given in base B1 is returned in base B2.
 def convert(N,B1,B2):
     x = [0]
     for digit in reversed(N):
@@ -48,24 +48,28 @@ def modsubtract(M, N, P, B):
 Assuming M and N are within 0,...,P-1, return (normalized) difference M−N mod P in base B. Note that P is a bignum.
 
 All the other functions are very straightforward with the help of normalization. The last function is just somewhat special at this stage, because of the modularity. If you inspect the situation carefully, you'll notice that depending on the relative size of M and N you will only need to write two calls to subtract(), and one call to add().
-Ex7. Bignum division, reduction, EC operations.
+
+# Ex7. Bignum division, reduction, EC operations.
 
 Here is a code that gives the integer quotient and remainder when dividing a bignum by a smaller one using the algorithm familiar from the elementary school. The notable exception is that finding the next digit to the quotient has to be done with some searching. Here a  trial is calculated for it and trial subtrahend  trahend  is probed until a proper  trial  is found to be the next digit. This search should be made faster. Can you do something to improve it?
 
 Division readily gives you the modular reduction, but you may write it as a function reduce(M,P,B). If M is already less than P, you avoid calling divide().
 
 Assume you already have the inversion function from Ex8. Modify your EC operations from Hp5 to run with bignums. You can of course do Ex8 at this moment, but the idea is that you prepare all the rest for bignums and work on the inversion next week. Note that unlike the EEA in Ex8, you need not bother with negative numbers in EC operations. Just use your modsubtract() when computing the differences. If a number can be out of the modular range, use your reduce() (or  just divide()) before calling any arithmetic functions.
-Ex8. Bignum modular inversion.
+
+# Ex8. Bignum modular inversion.
 
 Modify your EEA from Ex1 to run with bignums. The algorithm will necessarily output a negative number as one of the Bezout coefficients. This causes some trouble, because until now there is no representation of negative integers. The need is a very specialized one, and so it suffices to take it as a special case in the EEA and subtraction routine: Each bignum that can be negative, travels as an absolute value accompanied by a sign, and when such a number is treated, different cases with the sign are separated. Eventually no negative numbers will be treated in your earlier library from Ex6 and Ex7. Note that in EAA the quotient and remainder will always be non-negative, but any of the auxiliary variables can be negative, and some certainly will be.
 
 So, for instance in base 10 the number −52 is represented with the bignum [2,5] accompanied by its sign −1, using two variables, a list and an integer. Similarly [2,5] with +1 would be 52, and you cannot drop out the +1 in such a context in the way you are used to writing 52 instead of +52.
 
 Here is the code for  signedsubtract(M,Ms,N,Ns,B)  that you will need to call from your EEA, when doing the subtractions with the sign-accompanied values. The same file contains modinv(M,P,B), which is the ultimate goal of this exercise. It is given to you because of a small complication with the possible negative coefficient in the Bezout identity, before returning it as an inverse of M modulo P. As an example, consider the case of inverting 2 modulo 7. The Bezout identity is gcd(2,7) = 1 = (−3)·2+(1)·7. Taken modulo 7 this gives you 1 = (−3)·2, and the inverse of 2 must be reduced modulo 7 from being (−3) to be −3+7=4.
-Ex9. EC scalar multiplication with bignums.
+
+# Ex9. EC scalar multiplication with bignums.
 
 Using the same idea as in square&multiply in Ex1, write a script for scalar multiplication of EC elements, that is, an algorithm for double&add.
-Programming assignment. Sign with ECDSA.
+
+# Programming assignment. Sign with ECDSA.
 
 Create your own ECDSA public key and a script to make ECDSA signatures using bignums but the fairly small 112-bit group taken from the old standard SEC2 from year 2000 (see section 2.2.1). The curve E is defined by these values
 
@@ -95,11 +99,11 @@ That key is real for that student number, to enable testing your key-creating fu
 
 What to sign? Your ECDSA signing function must input the message as a nonempty hexadecimal string, without initial '0x'. It represents a hash value of a meaningful message. (You need not plug in your AES-Keccak from CE1.) Just input a hexstring into your signing function and convert it to a bignum. Here is the function for the conversion, and its inverse.
 
-# A string N of hexadecimals (without initial 0x) into a bignum in base 16
+### A string N of hexadecimals (without initial 0x) into a bignum in base 16
 def hexto16(N):
     return [int(h,16) for h in N[::-1]] # reverse order of the argument string
 
-# A bignum N in base 16 into a string of hexadecimals
+### A bignum N in base 16 into a string of hexadecimals
 def from16tohex(N):
     return ''.join([hex(i)[2].upper() for i in N[::-1]])
 
@@ -117,14 +121,14 @@ Checking the functionality of your submission happens by first checking the vali
 
 End note. You may find it convenient to generate the ephemeral key (kE , with 0 < kE < q) as a random bit string and convert that to its representation in arbitrary base. Here are functions for that purpose. The first one is just a helper, using one of the functions above:
 
-# Convert a string of hexadecimals H (without initial 0x) to its representation in base B.
+### Convert a string of hexadecimals H (without initial 0x) to its representation in base B.
 def hextoB(H,B):
     if B == 16:
         return hexto16(H)
     else:
         return convert(hexto16(H),16,B)
 
-# Convert a bit string K to its representation in base B, via hexadecimals.
+### Convert a bit string K to its representation in base B, via hexadecimals.
 def bitstoB(K,B):
     res = ''
     while len(K) % 4 != 0:  # Pad K to a length that is a multiple of 4.
